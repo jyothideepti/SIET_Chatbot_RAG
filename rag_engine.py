@@ -40,7 +40,7 @@ def build_vectors (chunks, model_name = "all-MiniLM-L6-v2"):
 def load_base (pdf_path= "01_College_Information.pdf"):
   full_text = load_pdf(pdf_path)
   chunks = create_chunks(full_text)
-  index,  embed_model = build_vector(chunks)
+  index,  embed_model = build_vectors(chunks)
   return  index, embed_model, chunks
 
 #retrieve
@@ -59,11 +59,11 @@ def retrieve_content (question, embed_model, chunks, index, num_chunks=3):
   return background
 
 #Ask:
-def ask_rag (question, embed_model, chunks, index, api_key, num_chunks, model_name = "openai/gpt-oss-120b"):
+def ask_rag (question, embed_model, chunks, index, api_key, num_chunks=3, model_name = "openai/gpt-oss-120b"):
   key = api_key
   if not key:
     raise ValueError("API Key Missing")
-  background = retrieve_content (question, embed_model, chunks, index, num_chunks=3):
+  background = retrieve_content (question, embed_model, chunks, index, num_chunks=3)
   prompt = """You are an professional AI Assistant.
   Answer user question using ONLY document background below.
   Do not invent or assume facts.
